@@ -74,9 +74,9 @@ public class Dice {
         // En caso ningún caso 0 será mayor que un número entre [0, MAX_USES],
         // como mucho será igual (a cero), por lo que la probabilidad de que
         // usesLeft=0 devuelva true es 0%.
-        boolean resultado = false;
+        boolean resultado = true;
         if( generator.nextInt(MAX_USES) < usesLeft){
-            resultado = true;
+            resultado = false;
         }
         
         return resultado;
