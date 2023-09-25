@@ -49,7 +49,7 @@ public class Dice {
     }
     
     public static int healthReward(){
-        return generator.nextInt(HEALTH_REWARD);
+        return generator.nextInt(HEALTH_REWARD+1);
     }
     
     public static float weaponPower(){
@@ -82,3 +82,5 @@ public class Dice {
         return resultado;
     }
 }
+
+
