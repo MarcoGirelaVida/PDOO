@@ -171,7 +171,7 @@ public class TestP1 {
         System.out.println( "Average Prob Intensity :" + averageProbIntensity*100 + "%");
         System.out.println("\n\n");
         
-        return 0;   
+        return 0;
     }
     
     public static void main(String[] args){
