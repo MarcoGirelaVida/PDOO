@@ -151,7 +151,7 @@ public class TestP1 {
         averageProbUses /= n*5;
         averageProbIntelligence /= n*10.0f;
         averageProbStrength /= n*10.0f;
-        averageProbResurrect /= n*0.3f;
+        averageProbResurrect /= n*1;
         averageProbWeaponsReward /= n*2;
         averageProbShieldsReward /= n*3;
         averageProbHealthReward /= n*5;
@@ -159,22 +159,22 @@ public class TestP1 {
         averageProbProtect /= n*2;
         averageProbIntensity /= n*10;
         
-        System.out.println( "Average Prob Uses :" + 1/averageProbUses);
-        System.out.println( "Average Prob Intelligence :" + 1/averageProbIntelligence);
-        System.out.println( "Average Prob Strength :" + 1/averageProbStrength);
-        System.out.println( "Average Prob Resurrect :" + 1/averageProbResurrect);
-        System.out.println( "Average Prob Weapons Reward :" + 1/averageProbWeaponsReward);
-        System.out.println( "Average Prob Shields Reward :" + 1/averageProbShieldsReward);
-        System.out.println( "Average Prob HealthReward :" + 1/averageProbHealthReward);
-        System.out.println( "Average Prob Attack :" + 1/averageProbAttack);
-        System.out.println( "Average Prob Protect :" + 1/averageProbProtect);
-        System.out.println( "Average Prob Intensity :" + 1/averageProbIntensity);
+        System.out.println( "Average Prob Uses :" + averageProbUses*100 + "%");
+        System.out.println( "Average Prob Intelligence :" + averageProbIntelligence*100 + "%");
+        System.out.println( "Average Prob Strength :" + averageProbStrength*100 + "%");
+        System.out.println( "Average Prob Resurrect :" + averageProbResurrect*100 + "%");
+        System.out.println( "Average Prob Weapons Reward :" + averageProbWeaponsReward*100 + "%");
+        System.out.println( "Average Prob Shields Reward :" + averageProbShieldsReward*100 + "%");
+        System.out.println( "Average Prob HealthReward :" + averageProbHealthReward*100 + "%");
+        System.out.println( "Average Prob Attack :" + averageProbAttack*100 + "%");
+        System.out.println( "Average Prob Protect :" + averageProbProtect*100 + "%");
+        System.out.println( "Average Prob Intensity :" + averageProbIntensity*100 + "%");
         System.out.println("\n\n");
         
-        return 0;
+        return 0;   
     }
     
-    public static void main(){
+    public static void main(String[] args){
         
         int status = testWeapon() + testShield() + testGameState() + 
                     testEnums() + testDice();
