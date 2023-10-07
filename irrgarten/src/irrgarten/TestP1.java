@@ -41,9 +41,9 @@ public class TestP1 {
         Weapon maxWeapon = new Weapon(2, 5);
         Weapon minWeapon = voidWeapon;
         Weapon averageWeapon = new Weapon(1, 3);
-        System.out.println("Result discarting maxWeapon: " + maxWeapon.discard());
-        System.out.println("Result discarting minWeapon: " + minWeapon.discard());
-        System.out.println("Result discarting averageWeapon: " + averageWeapon.discard());
+        System.out.println("Result discarding maxWeapon: " + maxWeapon.discard());
+        System.out.println("Result discarding minWeapon: " + minWeapon.discard());
+        System.out.println("Result discarding averageWeapon: " + averageWeapon.discard());
         System.out.println("\n\n");
         
         return 0;
