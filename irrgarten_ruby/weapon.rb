@@ -1,39 +1,28 @@
 # frozen_string_literal: true
-
+require_relative 'dice'
 class Weapon
-  @protection
-  @uses
-
-Shield(protection, uses)
-  if protection < 0 || uses < 0
-    throw new IllegalArgumentException("Parámetros incorrectos.")
+  def initialize(power, uses)
+    @power = power
+    @uses = uses
   end
 
-  this.protection = protection
-  this.uses = uses
-  end
+  def attack
+    effective_power = 0
 
-  Shield
-    this(0.0f, 0)
-  end
-
-  protect
-
-    effectiveProtection = 0
-
-    if (uses > 0){
-      effectiveProtection = protection
-    uses--
+    if @uses > 0
+      effective_power = @power
+      @uses -= 1
     end
 
-    return effectiveProtection
+    effective_power
   end
 
-  toString
-    return "S[" + protection + ", " + uses + "]"
+  def to_s
+    "W[#{@power}, #{@uses}]"
   end
 
-  discard
-    return Dice.discardElement(uses)
+  def discard
+    Dice::discard_element(@uses)
   end
+
 end
