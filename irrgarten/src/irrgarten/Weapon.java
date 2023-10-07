@@ -14,10 +14,6 @@ public class Weapon {
     
     // Constructor with parameters
     public Weapon(float power, int uses){
-        if (power < 0 || uses < 0){ 
-            throw new IllegalArgumentException("Parámetros incorrectos.");
-        }
-         
         this.power = power;
         this.uses = uses;
     }
