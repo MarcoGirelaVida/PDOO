@@ -9,7 +9,6 @@ package irrgarten;
  * @author marco
  */
 public class TestP1 {
-    public static Dice dice = new Dice();
     
     public static int testWeapon(){
         System.out.println("TESTING WEAPON");
@@ -18,7 +17,7 @@ public class TestP1 {
         Weapon voidWeapon = new Weapon();
         
         // Test constructor with parameters
-        Weapon filledWeapon = new Weapon(dice.weaponPower() , dice.usesLeft());
+        Weapon filledWeapon = new Weapon(Dice.weaponPower() , Dice.usesLeft());
         
         // Test to_String
         System.out.println("Weapons state after being created: ");
@@ -56,7 +55,7 @@ public class TestP1 {
         Shield voidShield = new Shield();
         
         // Test constructor with parameters
-        Shield filledShield = new Shield(dice.shieldPower() , dice.usesLeft());
+        Shield filledShield = new Shield(Dice.shieldPower() , Dice.usesLeft());
         
         // Test to_String
         System.out.println("Shields state after being created: ");
@@ -120,7 +119,7 @@ public class TestP1 {
     }
     
     public static int testDice(){
-        System.out.println("TESTING DICE");
+        System.out.println("TESTING Dice");
 
         float averageProbUses = 0;
         float averageProbIntelligence = 0;
@@ -136,16 +135,16 @@ public class TestP1 {
         int n = 10000;
         
         for(int i=0; i<n; i++){
-            averageProbUses += dice.usesLeft();
-            averageProbIntelligence += dice.randomIntelligence();
-            averageProbStrength += dice.randomStrength();
-            averageProbResurrect += (dice.resurrectPlayer() == true) ? 1 : 0;
-            averageProbWeaponsReward += dice.weaponsReward();
-            averageProbShieldsReward += dice.shieldsReward();
-            averageProbHealthReward += dice.healthReward();
-            averageProbAttack += dice.weaponPower();
-            averageProbProtect += dice.shieldPower();
-            averageProbIntensity += dice.intensity(10);
+            averageProbUses += Dice.usesLeft();
+            averageProbIntelligence += Dice.randomIntelligence();
+            averageProbStrength += Dice.randomStrength();
+            averageProbResurrect += (Dice.resurrectPlayer() == true) ? 1 : 0;
+            averageProbWeaponsReward += Dice.weaponsReward();
+            averageProbShieldsReward += Dice.shieldsReward();
+            averageProbHealthReward += Dice.healthReward();
+            averageProbAttack += Dice.weaponPower();
+            averageProbProtect += Dice.shieldPower();
+            averageProbIntensity += Dice.intensity(10);
         }
         
         averageProbUses /= n*5;

@@ -16,10 +16,10 @@ public class Player {
     private static final int MAX_SHIELDS = 3;
     private static final int INITIAL_HEALTH = 10;
     private static final int HITS2LOSE = 3;
-    private String name;
-    private char number;
-    private float intelligence;
-    private float strength;
+    private final String name;
+    private final char number;
+    private final float intelligence;
+    private final float strength;
     private float health;
     private int row;
     private int col;
@@ -28,17 +28,18 @@ public class Player {
     private ArrayList<Shield> shields;
     
     
+    // Number no debería ser un int?
     public Player(char number, float intelligence, float strength){
         this.number = number;
         this.intelligence = intelligence;
         this.strength = strength;
         this.consecutiveHits = 0;
         this.name = "Player #" + number;
-        this.health = this.INITIAL_HEALTH;
+        this.health = INITIAL_HEALTH;
     }
     
     public void resurrect(){
-        this.health = this.INITIAL_HEALTH;
+        this.health = INITIAL_HEALTH;
         weapons.clear();
         shields.clear();
     }
@@ -90,12 +91,12 @@ public class Player {
         
         for(int i = 0; i < wReward; i++){
             Weapon wnew = new Weapon();
-            receiveWeapon(w: wnew);
+            receiveWeapon(wnew);
         }
         
         for (int i = 0; i < sReward; i++){
             Shield snew = new Shield();
-            receiveShield(s: snew);
+            receiveShield(snew);
         }
         
         int extraHealth = Dice.healthReward();
@@ -179,7 +180,7 @@ public class Player {
             this.resetHits();
          }
         
-        if((consecutiveHits == this.HITS2LOSE) || dead()){
+        if((consecutiveHits == HITS2LOSE) || dead()){
             resetHits();
             lose = true;
         }

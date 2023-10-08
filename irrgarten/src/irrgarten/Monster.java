@@ -10,9 +10,9 @@ package irrgarten;
  */
 public class Monster {
     private static final int INITIAL_HEALTH = 5;
-    private String name;
-    private float intelligence;
-    private float strength;
+    private final String name;
+    private final float intelligence;
+    private final float strength;
     private float health;
     private int row;
     private int col;
@@ -20,7 +20,7 @@ public class Monster {
     public Monster(String name, float intelligence){
         this.name = name;
         this.intelligence = intelligence;
-        this.health = this.INITIAL_HEALTH;
+        this.health = INITIAL_HEALTH;
         this.strength = Dice.randomStrength();
     }
     

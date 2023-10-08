@@ -51,6 +51,7 @@ public class GameState {
     }
     
     public String getLog(){
-        return log;
+        return "CURRENT GAMESTATE:\n" + "CURRENT PLAYER: " + getCurrentPlayer() + "\n"
+                + getPlayers() + getMonsters() + getLabyrinthv();
     }
 }

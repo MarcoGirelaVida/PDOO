@@ -8,9 +8,7 @@ package irrgarten;
  *
  * @author marco
  */
-import static irrgarten.Directions.UP;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class Labyrinth {
     private static final char BLOCK_CHAR = 'X';
@@ -20,10 +18,10 @@ public class Labyrinth {
     private static final char EXIT_CHAR = 'E';
     private static final int ROW = 0;
     private static final int COL = 1;
-    private int nRows;
-    private int nCols;
-    private int exitRow;
-    private int exitCol;
+    private final int nRows;
+    private final int nCols;
+    private final int exitRow;
+    private final int exitCol;
     
     private static Monster[][] monsters;
     private static Player[][] players;
@@ -44,11 +42,20 @@ public class Labyrinth {
         players = new Player[nRows][nCols];
         labyrinth = new char[nRows][nCols];
         
+        for(int i=0; i < nRows; i++){
+            for(int j=0; j < nCols; j++){
+                labyrinth[i][j] = '-';
+            }
+        }
+        
         labyrinth[exitRow][exitCol] = 'E';
     }
     
-    public void spreadPlayers(Player[] players){
-        
+    public void spreadPlayers(ArrayList<Player> players){
+        for (Player p : players) {
+            int[] pos = this.randomEmptyPos();
+            this.putPlayer2D(-1, -1, pos[0], pos[1], p);
+        }
     }
     
     public boolean haveAWinner(){
@@ -79,15 +86,51 @@ public class Labyrinth {
     }
     
     public Monster putPlayer(Directions direction, Player player){
+        int oldRow = player.getRow();
+        int oldCol = player.getCol();
         
+        int[] newPos = dir2Pos(oldRow, oldCol, direction);
+        
+        return putPlayer2D(oldRow, oldCol, newPos[0], newPos[1], player);
     }
     
     public void addBlock(Orientation orientation, int startRow, int startCol, int length){
+        int incRow = 0;
+        int incCol = 1;
+   
+        if (orientation == Orientation.VERTICAL){
+            incRow = 1;
+            incCol = 0;
+        }
         
+        int row = startRow;
+        int col = startCol;
+        
+        while (this.posOK(row, col) && (this.emptyPos(row, col) && (length > 0))){
+            labyrinth[row][col] = 'X';
+            length--;
+            row += incRow;
+            col += incCol;
+        }
     }
     
-    public Directions[] validMoves(int row, int col){
+    public ArrayList<Directions> validMoves(int row, int col){
+        ArrayList<Directions> output = new ArrayList<>();
         
+        if (this.canStepOn(row+1, col)){
+            output.add(Directions.DOWN);
+        }
+        if (this.canStepOn(row-1, col)){
+            output.add(Directions.UP);
+        }
+        if (this.canStepOn(row, col+1)){
+            output.add(Directions.RIGHT);
+        }
+        if (this.canStepOn(row, col-1)){
+            output.add(Directions.LEFT);
+        }
+        
+        return output;
     }
     
     private boolean posOK(int row, int col){
@@ -131,11 +174,11 @@ public class Labyrinth {
         
         switch (direction) {
             case UP:
-                nextPosition[0] = row+1;
+                nextPosition[0] = row-1;
                 nextPosition[1] = col;
                 break;
             case DOWN:
-                nextPosition[0] = row-1;
+                nextPosition[0] = row+1;
                 nextPosition[1] = col;
                 break;
             case LEFT:
@@ -153,15 +196,16 @@ public class Labyrinth {
     
 
     private int[] randomEmptyPos(){
-        int [] randomPos = new int[2];
-        
-        do{
+        int[] randomPos = new int[2];
+
+        do {
             randomPos[0] = Dice.randomPos(nRows-1);
             randomPos[1] = Dice.randomPos(nCols-1);
-        while(!this.posOK(randomPos[0], randomPos[1]));
-        
+        } while (!this.posOK(randomPos[0], randomPos[1]));
+
         return randomPos;
     }
+
     
     private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player){
         
