@@ -44,11 +44,11 @@ public class Labyrinth {
         
         for(int i=0; i < nRows; i++){
             for(int j=0; j < nCols; j++){
-                labyrinth[i][j] = this.EMPTY_CHAR;
+                labyrinth[i][j] = EMPTY_CHAR;
             }
         }
         
-        labyrinth[exitRow][exitCol] = this.EXIT_CHAR;
+        labyrinth[exitRow][exitCol] = EXIT_CHAR;
     }
     
     public void spreadPlayers(ArrayList<Player> players){
@@ -79,7 +79,7 @@ public class Labyrinth {
     
     public void addMonster(int row, int col, Monster monster){
         if(this.posOK(row, col) && this.emptyPos(row, col)){
-            labyrinth[row][col] = this.MONSTER_CHAR;
+            labyrinth[row][col] = MONSTER_CHAR;
             monsters[row][col] = monster;
             monster.setPos(row, col);
         }
@@ -107,7 +107,7 @@ public class Labyrinth {
         int col = startCol;
         
         while (this.posOK(row, col) && (this.emptyPos(row, col) && (length > 0))){
-            labyrinth[row][col] = this.BLOCK_CHAR;
+            labyrinth[row][col] = BLOCK_CHAR;
             length--;
             row += incRow;
             col += incCol;
@@ -138,19 +138,19 @@ public class Labyrinth {
     }
     
     private boolean emptyPos(int row, int col){
-        return labyrinth[row][col] == '-';
+        return labyrinth[row][col] == EMPTY_CHAR;
     }
     
     private boolean monsterPos(int row, int col){
-        return labyrinth[row][col] == 'M';
+        return labyrinth[row][col] == MONSTER_CHAR;
     }
     
     private boolean exitPos(int row, int col){
-        return labyrinth[row][col] == 'E';
+        return labyrinth[row][col] == EXIT_CHAR;
     }
     
     private boolean combatPos(int row, int col){
-        return labyrinth[row][col] == 'C';
+        return labyrinth[row][col] == COMBAT_CHAR;
     }
     
     private boolean canStepOn(int row, int col){
@@ -161,10 +161,10 @@ public class Labyrinth {
     private void updateOldPos(int row, int col){
         if(this.posOK(row, col)){
             if(this.combatPos(row, col)){
-                labyrinth[row][col] = this.MONSTER_CHAR;
+                labyrinth[row][col] = MONSTER_CHAR;
             }
             else{
-                labyrinth[row][col] = this.EMPTY_CHAR;
+                labyrinth[row][col] = EMPTY_CHAR;
             }
         }
     }
