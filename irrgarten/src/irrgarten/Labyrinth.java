@@ -44,11 +44,11 @@ public class Labyrinth {
         
         for(int i=0; i < nRows; i++){
             for(int j=0; j < nCols; j++){
-                labyrinth[i][j] = '-';
+                labyrinth[i][j] = this.EMPTY_CHAR;
             }
         }
         
-        labyrinth[exitRow][exitCol] = 'E';
+        labyrinth[exitRow][exitCol] = this.EXIT_CHAR;
     }
     
     public void spreadPlayers(ArrayList<Player> players){
@@ -79,7 +79,7 @@ public class Labyrinth {
     
     public void addMonster(int row, int col, Monster monster){
         if(this.posOK(row, col) && this.emptyPos(row, col)){
-            labyrinth[row][col] = 'M';
+            labyrinth[row][col] = this.MONSTER_CHAR;
             monsters[row][col] = monster;
             monster.setPos(row, col);
         }
@@ -107,7 +107,7 @@ public class Labyrinth {
         int col = startCol;
         
         while (this.posOK(row, col) && (this.emptyPos(row, col) && (length > 0))){
-            labyrinth[row][col] = 'X';
+            labyrinth[row][col] = this.BLOCK_CHAR;
             length--;
             row += incRow;
             col += incCol;
@@ -161,10 +161,10 @@ public class Labyrinth {
     private void updateOldPos(int row, int col){
         if(this.posOK(row, col)){
             if(this.combatPos(row, col)){
-                labyrinth[row][col] = 'M';
+                labyrinth[row][col] = this.MONSTER_CHAR;
             }
             else{
-                labyrinth[row][col] = '-';
+                labyrinth[row][col] = this.EMPTY_CHAR;
             }
         }
     }
