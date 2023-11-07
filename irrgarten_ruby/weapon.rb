@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative 'dice'
 class Weapon
-  def initialize(power, uses)
+  def initialize(power = 0.0, uses = 0)
     @power = power
     @uses = uses
   end

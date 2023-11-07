@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative 'dice'
 class Shield
-  def initialize(protection, uses)
+  def initialize(protection = 0.0, uses = 0)
     @protection = protection
     @uses = uses
   end

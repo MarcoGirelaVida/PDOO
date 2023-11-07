@@ -44,7 +44,34 @@ public class Game {
     }
     
     public boolean nextStep(Directions preferredDirection){
+        boolean dead = this.currentPlayer.dead();
+        if (!dead) {
+            Directions direction = this.actualDirection(preferredDirection);
+            
+            if (direction != preferredDirection) {
+                this.logPlayerNoOrders();
+            }
+            
+            Monster monster = this.labyrinth.putPlayer(direction, currentPlayer);
+            
+            if (monster == null) {
+                this.logNoMonster();
+            } else {
+                GameCharacter winner = this.combat(monster);
+                this.manageReward(winner);
+            }
+        }
+        else {
+            this.manageResurrection();
+        }
         
+        boolean endGame = this.finished();
+        
+        if (!endGame) {
+            this.nextPlayer();
+        }
+        
+        return endGame;
     }
     
     public final GameState getGameState(){
@@ -60,7 +87,7 @@ public class Game {
     }
     
     private void nextPlayer(){
-        this.currentPlayerIndex = (currentPlayerIndex + 1) % currentPlayerIndex;
+        this.currentPlayerIndex = (currentPlayerIndex + 1) % this.players.size();
         this.currentPlayer = players.get(currentPlayerIndex);
     }
     
@@ -73,7 +100,29 @@ public class Game {
     }
     
     private GameCharacter combat(Monster monster){
+        int rounds = 0;
+        GameCharacter winner = GameCharacter.PLAYER;
         
+        float playerAttack = this.currentPlayer.attack();
+        boolean lose = monster.defend(playerAttack);
+        
+        while ((!lose) && (rounds < MAX_ROUNDS)){
+            winner = GameCharacter.MONSTER;
+            rounds++;
+            
+            float monsterAttack = monster.attack();
+            lose = this.currentPlayer.defend(monsterAttack);
+            
+            if (!lose) {
+                playerAttack = this.currentPlayer.attack();
+                winner = GameCharacter.PLAYER;
+                lose = monster.defend(playerAttack);
+            }
+        }
+        
+        this.logRounds(rounds, MAX_ROUNDS);
+        
+        return winner;
     }
     
     private void manageReward(GameCharacter winner){
@@ -115,7 +164,7 @@ public class Game {
     }
     
     private void logPlayerNoOrders(){
-        log += "INVALID ORDER. PLAYER DID NOT COMMITED TO IT\n";
+        log += "INVALID ORDER. PLAYER DID NOT COMMITTED TO IT\n";
     }
     
     private void logNoMonster(){
@@ -123,6 +172,6 @@ public class Game {
     }
     
     private void logRounds(int rounds, int max){
-        log += "THE COMBAT HAVE DONE: " + rounds + " of " + this.MAX_ROUNDS + " ROUNDS";
+        log += "THE COMBAT HAVE GOT: " + rounds + " of " + max + " ROUNDS\n";
     }
 }

@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -36,10 +36,13 @@ public class Player {
         this.consecutiveHits = 0;
         this.name = "Player #" + number;
         this.health = INITIAL_HEALTH;
+        this.row = -1;
+        this.col = -1;
     }
     
     public void resurrect(){
         this.health = INITIAL_HEALTH;
+        this.consecutiveHits = 0;
         weapons.clear();
         shields.clear();
     }
@@ -117,10 +120,12 @@ public class Player {
         for(int i = 0; i < Math.max(this.weapons.size(), this.shields.size()); i++){
             if (i < this.weapons.size()){
                 weaponsString += (this.weapons.get(i)).toString();
+                weaponsString += "\n";
             }
             
             if (i < this.shields.size()){
                 shieldsString += (this.shields.get(i)).toString();
+                shieldsString += "\n";
             }
         }
 
@@ -129,11 +134,31 @@ public class Player {
     }
     
     private void receiveWeapon(Weapon w){
-
+        for (Weapon wi : this.weapons){
+            boolean discard = wi.discard();
+            if (discard) {
+                this.weapons.remove(wi);
+            }
+        }
+        
+        int size = this.weapons.size();
+        if (size < MAX_WEAPONS) {
+            this.weapons.add(w);
+        }
     }
     
     private void receiveShield(Shield s){
+        for (Shield si : this.shields){
+            boolean discard = si.discard();
+            if (discard){
+                this.shields.add(si);
+            }
+        }
         
+        int size = this.shields.size();
+        if (size < MAX_SHIELDS) {
+            this.shields.add(s);
+        }
     }
     
     private Weapon newWeapon(){

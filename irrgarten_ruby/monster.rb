@@ -8,8 +8,8 @@ class Monster
     @intelligence = intelligence
     @health = INITIAL_HEALTH
     @strength = Dice.random_strength
-    @row = nil
-    @col = nil
+    @row = -1
+    @col = -1
   end
 
   def dead

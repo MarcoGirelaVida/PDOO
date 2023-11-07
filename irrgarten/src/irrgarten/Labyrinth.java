@@ -23,9 +23,9 @@ public class Labyrinth {
     private final int exitRow;
     private final int exitCol;
     
-    private static Monster[][] monsters;
-    private static Player[][] players;
-    private static char[][] labyrinth;
+    private Monster[][] monsters;
+    private Player[][] players;
+    private char[][] labyrinth;
     
     /*
     private static LabyrinthSquare[][] labyrinth;
@@ -155,7 +155,7 @@ public class Labyrinth {
     
     private boolean canStepOn(int row, int col){
         //No pongo && posOK porque ninguna de esas opciones dará true en una posición invalida)
-        return this.monsterPos(row, col) || this.emptyPos(row, col) || this.monsterPos(row, col);
+        return (this.monsterPos(row, col) || this.emptyPos(row, col) || this.exitPos(row, col)) && this.posOK(row,col);
     }
     
     private void updateOldPos(int row, int col){
@@ -208,6 +208,30 @@ public class Labyrinth {
 
     
     private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player){
+        Monster output = null;
         
+        if (canStepOn(row, col)) {
+            if (posOK(oldRow, oldCol)) {
+                Player p = players[oldRow][oldCol];
+                
+                if (p == player) {
+                    this.updateOldPos(oldRow, oldCol);
+                    players[oldRow][oldCol] = null;
+                }
+            }
+            
+            if (this.monsterPos(row, col)) {
+                labyrinth[row][col] = COMBAT_CHAR;
+                output = monsters[row][col];
+            }
+            else{
+                labyrinth[row][col] = (char) player.getNumber();
+            }
+            
+            players[row][col] = player;
+            player.setPos(row, col);
+        }
+        
+        return output;
     }
 }
