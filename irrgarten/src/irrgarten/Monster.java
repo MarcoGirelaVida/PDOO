@@ -22,6 +22,8 @@ public class Monster {
         this.intelligence = intelligence;
         this.health = INITIAL_HEALTH;
         this.strength = Dice.randomStrength();
+        this.row = -1;
+        this.col = -1;
     }
     
     public boolean dead(){
@@ -54,7 +56,7 @@ public class Monster {
     
     
     public String toString(){
-        String header = "MONSTER \"" + this.name + "\"\n";
+        String header = "MONSTER " + this.name + "\n";
         String location = "POSTION: [ "+ this.row + ", " + this.col + " ]\n";
         String strengthString = "STRENGTH: " + this.strength + "\n";
         String healthString = "HEALTH: " + this.health + "\n";
