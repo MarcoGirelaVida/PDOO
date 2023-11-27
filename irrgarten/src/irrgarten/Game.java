@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class Game {
     private static final int MAX_ROUNDS = 10;
     private int currentPlayerIndex;
-    private int nRows = 20;
-    private int nCols = 20;
     private String log;
     private Labyrinth labyrinth;
     private Player currentPlayer;
@@ -25,16 +23,23 @@ public class Game {
         players = new ArrayList<>(nplayers);
         monsters = new ArrayList<>();
         
-        for(int i=0; i < players.size(); i++){
+        for(int i=0; i < nplayers; i++){
             Player p = new Player((char)i, Dice.randomIntelligence(), Dice.randomStrength());
             players.add(p);
         }
         
         this.currentPlayerIndex = Dice.whoStarts(nplayers);
         this.currentPlayer = players.get(this.currentPlayerIndex);
-        labyrinth = new Labyrinth(this.nRows, this.nCols, Dice.randomPos(this.nRows), Dice.randomPos(this.nCols));
         
-        labyrinth.spreadPlayers(players);
+        final int NROWS = 20;
+        final int NCOLS = 20;
+        final int EXITROW = Dice.randomPos(NROWS);
+        final int EXITCOL = Dice.randomPos(NCOLS);
+        labyrinth = new Labyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
+        
+        this.labyrinth.spreadPlayers(players);
+        configureLabyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
+        
         
         log = "GAME STARTS\n";
         GameState gameState = this.getGameState();
@@ -79,16 +84,46 @@ public class Game {
     
     public final GameState getGameState(){
         // No sé si la llamada a toString es lo que se necesita
-        GameState gameState = new GameState(labyrinth.toString(), players.toString(),
-                                    monsters.toString(), this.currentPlayer.getNumber(),
-                                    this.finished(), this.log);
+        String strPlayers = players.toString();
+        String strMonsters = monsters.toString();
+        String strLabyrinth = labyrinth.toString();
+        GameState gameState = new GameState(strPlayers, strMonsters, strLabyrinth,
+                    this.currentPlayer.getNumber(), this.finished(), this.log);
         return gameState;
     }
     
-    private void configureLabyrinth(){
-        for (int i = 0; i < this.nRows; i++) {
-            for (int j = 0; j < this.nCols; j++) {
-                
+    private void configureLabyrinth(int NROWS, int NCOLS, int EXITROW, int EXITCOL) {
+                    
+        int row, col;
+        for (int i = 0; i < NROWS-2; i++) {
+
+            do {
+                row = Dice.randomPos(NROWS-1);
+                col = Dice.randomPos(NROWS-1);
+            } while (row == EXITROW && col == EXITCOL);
+
+            Monster monster = new Monster("Monster " + i, Dice.randomIntelligence(),Dice.randomStrength());
+            
+            
+            if(labyrinth.addMonster(row, col, monster)){
+                monsters.add(monster);
+            }
+
+        }
+
+
+       for (int i = 0; i <  NROWS-2; i++) {
+            
+
+            do {
+                row = Dice.randomPos(NROWS-1);
+                col = Dice.randomPos(NROWS-1);
+            } while (row == EXITCOL && col == EXITCOL);
+
+            if (i == 0) {
+                labyrinth.addBlock(Orientation.HORIZONTAL, row, col, NROWS-2);
+            } else {
+                labyrinth.addBlock(Orientation.VERTICAL, row, col, NROWS-2);
             }
         }
     }

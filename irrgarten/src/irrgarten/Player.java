@@ -30,6 +30,8 @@ public class Player {
     
     // Number no debería ser un int?
     public Player(char number, float intelligence, float strength){
+        weapons = new ArrayList<>();
+        shields = new ArrayList<>();
         this.number = number;
         this.intelligence = intelligence;
         this.strength = strength;
@@ -117,17 +119,17 @@ public class Player {
         String weaponsString = "";
         String shieldsString = "";
         
-        for(int i = 0; i < Math.max(this.weapons.size(), this.shields.size()); i++){
-            if (i < this.weapons.size()){
-                weaponsString += (this.weapons.get(i)).toString();
-                weaponsString += "\n";
-            }
-            
-            if (i < this.shields.size()){
-                shieldsString += (this.shields.get(i)).toString();
-                shieldsString += "\n";
-            }
+        System.err.println("Tamaño de wapons: " + weapons.size());
+        for (Weapon w : weapons){
+            weaponsString += w.toString();
+            weaponsString += "\n";
         }
+
+        for (Shield s : shields){
+            shieldsString += s.toString();
+            shieldsString += "\n";
+        }
+        
 
         return header + location + strengthString + healthString + intelligenceString
                 + consecutivehitsString + weaponsString + shieldsString;

@@ -17,11 +17,11 @@ public class Monster {
     private int row;
     private int col;
     
-    public Monster(String name, float intelligence){
+    public Monster(String name, float intelligence, float strength){
         this.name = name;
         this.intelligence = intelligence;
         this.health = INITIAL_HEALTH;
-        this.strength = Dice.randomStrength();
+        this.strength = strength;
         this.row = -1;
         this.col = -1;
     }

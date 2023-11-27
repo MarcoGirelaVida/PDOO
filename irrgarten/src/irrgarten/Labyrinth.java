@@ -51,10 +51,12 @@ public class Labyrinth {
         labyrinth[exitRow][exitCol] = EXIT_CHAR;
     }
     
+    // Reparte los jugadores dados en el vector "players" en posiciones alaetorias
+    // del laberinto
     public void spreadPlayers(ArrayList<Player> players){
         for (Player p : players) {
             int[] pos = this.randomEmptyPos();
-            this.putPlayer2D(-1, -1, pos[0], pos[1], p);
+            this.putPlayer2D(-1, -1, pos[ROW], pos[COL], p);
         }
     }
     
@@ -83,12 +85,19 @@ public class Labyrinth {
     // está vacía, anota en el laberinto la presencia de un monstruo
     // 2. guarda la referencia del monstruo en el atributo contenedor 
     // 3. e indica al monstruo cual es su posición actual (setPos)
-    public void addMonster(int row, int col, Monster monster){
+    // 4. Si se ha podido colocar devuelve true (modificación propia)
+    public boolean addMonster(int row, int col, Monster monster){
+        boolean successful = true;
         if(this.posOK(row, col) && this.emptyPos(row, col)){
             labyrinth[row][col] = MONSTER_CHAR;
             monsters[row][col] = monster;
             monster.setPos(row, col);
         }
+        else{
+            successful = false;
+        }
+        
+        return successful;
     }
     
     // Actualiza la posición de un jugador
@@ -150,7 +159,7 @@ public class Labyrinth {
     
     // Devuelve true si la posición proporcionada está dentro del laberinto
     private boolean posOK(int row, int col){
-        return (row < nRows) && ( col < nCols);
+        return (row < nRows) && ( col < nCols) && (row >= 0) && (col >= 0);
     }
     
     // Devuelve true si la posición suministrada está vacía.
@@ -205,20 +214,20 @@ public class Labyrinth {
         
         switch (direction) {
             case UP:
-                nextPosition[0] = row-1;
-                nextPosition[1] = col;
+                nextPosition[ROW] = row-1;
+                nextPosition[COL] = col;
                 break;
             case DOWN:
-                nextPosition[0] = row+1;
-                nextPosition[1] = col;
+                nextPosition[ROW] = row+1;
+                nextPosition[COL] = col;
                 break;
             case LEFT:
-                nextPosition[0] = row;
-                nextPosition[1] = col-1;
+                nextPosition[ROW] = row;
+                nextPosition[COL] = col-1;
                 break;
             case RIGHT:
-                nextPosition[0] = row;
-                nextPosition[1] = col+1;
+                nextPosition[ROW] = row;
+                nextPosition[COL] = col+1;
                 break;
         }
         
@@ -230,9 +239,9 @@ public class Labyrinth {
         int[] randomPos = new int[2];
 
         do {
-            randomPos[0] = Dice.randomPos(nRows-1);
-            randomPos[1] = Dice.randomPos(nCols-1);
-        } while (!this.posOK(randomPos[0], randomPos[1]) || !this.emptyPos(randomPos[0], randomPos[1]) );
+            randomPos[ROW] = Dice.randomPos(nRows-1);
+            randomPos[COL] = Dice.randomPos(nCols-1);
+        } while (!this.posOK(randomPos[ROW], randomPos[COL]) || !this.emptyPos(randomPos[ROW], randomPos[COL]) );
 
         return randomPos;
     }

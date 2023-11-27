@@ -25,7 +25,7 @@ public class Dice {
     }
     
     public static int whoStarts(int nplayers){
-        return generator.nextInt(nplayers+1);
+        return generator.nextInt(nplayers); // EL número nplayers es excluyente porque empieza en 0
     }
     
     public static float randomIntelligence(){
