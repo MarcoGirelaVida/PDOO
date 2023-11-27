@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
+require_relative 'player'
+require_relative 'monster'
+require_relative 'game_state'
+require_relative 'labyrinth'
+require_relative 'weapon'
+require_relative 'shield'
+require_relative 'dice'
 class Game
   MAX_ROUNDS = 10
 
-  def initialize (n_players)
-    @players = Array.new
-    @monsters = Array.new
+  def initialize(n_players)
+    @players = []
+    @monsters = []
 
     n_players.times do |i|
       p = Player.new(i, Dice.random_intelligence, Dice.random_strength)
@@ -14,7 +21,7 @@ class Game
 
     @current_player_index = Dice.who_starts(n_players)
     @current_player = @players.at(@current_player_index)
-    @labyrinth = Labyrinth.new(20,20, Dice.random_pos(20), Dice.random_pos(20))
+    @labyrinth = Labyrinth.new(20, 20, Dice.random_pos(20), Dice.random_pos(20))
 
     @labyrinth.spread_players(@players)
 
@@ -27,15 +34,13 @@ class Game
     @labyrinth.have_a_winner
   end
 
-  def next_step (preferred_direction)
-    # @log = ""
+  def next_step(preferred_direction)
+    @log = ''
     dead = @current_player.dead
     if !dead
       direction = actual_direction(preferred_direction)
 
-      if direction != preferred_direction
-        log_player_no_orders
-      end
+      log_player_no_orders if direction != preferred_direction
 
       monster = @labyrinth.put_player(direction, @current_player)
 
@@ -51,9 +56,7 @@ class Game
 
     end_game = finished
 
-    unless end_game
-      next_player
-    end
+    next_player unless end_game
 
     end_game
   end
@@ -71,7 +74,7 @@ class Game
     @current_player = @players.get(@current_player_index)
   end
 
-  def actual_direction (preferred_direction)
+  def actual_direction(preferred_direction)
     current_row = @current_player.row
     current_col = @current_player.col
     valid_moves = @labyrinth.valid_moves(current_row, current_col)
@@ -79,14 +82,14 @@ class Game
     @current_player.move(preferred_direction, valid_moves)
   end
 
-  def combat (monster)
+  def combat(monster)
     rounds = 0
     winner = GameCharacter::PLAYER
 
     player_attack = @current_player.attack
     lose = monster.defend(player_attack)
 
-    while (!lose) && (rounds < MAX_ROUNDS)
+    while !lose && (rounds < MAX_ROUNDS)
       winner = GameCharacter::MONSTER
       rounds += 1
 
@@ -105,7 +108,7 @@ class Game
     winner
   end
 
-  def manage_reward (winner)
+  def manage_reward(winner)
     if winner == GameCharacter::PLAYER
       @current_player.receive_reward
       log_player_won
@@ -149,7 +152,7 @@ class Game
     @log.concat("PLAYER MOVED TO A VOID SQUARE OR DID NOT MOVE\n")
   end
 
-  def log_rounds (rounds, max)
+  def log_rounds(rounds, max)
     @log.concat("THE COMBAT HAVE GOT: #{rounds} of #{max} ROUNDS\n")
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'dice'
 class Shield
   def initialize(protection = 0.0, uses = 0)
@@ -9,7 +10,7 @@ class Shield
   def protect
     effective_protection = 0
 
-    if @uses > 0
+    if @uses.positive?
       effective_protection = @protection
       @uses -= 1
     end
@@ -22,7 +23,6 @@ class Shield
   end
 
   def discard
-    Dice::discard_element(@uses)
+    Dice.discard_element(@uses)
   end
-
 end

@@ -6,22 +6,20 @@ class Player
   INITIAL_HEALTH = 10
   HITS2LOSE = 3
 
-  def initialize (number, intelligence, strength)
+  def initialize(number, intelligence, strength)
     @number = number
     @intelligence = intelligence
     @strength = strength
     @consecutive_hits = 0
     @health = INITIAL_HEALTH
     @name = "Player ##{@number}"
-    @weapons = Array.new
-    @shields = Array.new
+    @weapons = []
+    @shields = []
     @row = -1
     @col = -1
   end
 
-  attr_reader :row
-  attr_reader :col
-  attr_reader :number
+  attr_reader :row, :col, :number
 
   def resurrect
     @health = INITIAL_HEALTH
@@ -30,20 +28,20 @@ class Player
     @shields.clear
   end
 
-  def set_pos (row, col)
+  def set_pos(row, col)
     @row = row
     @col = col
   end
 
   def dead
-    @health == 0
+    @health.zero?
   end
 
-  def move (direction, valid_moves)
+  def move(direction, valid_moves)
     size = valid_moves.size
     contained = valid_moves.include?(direction)
 
-    if (size > 0) && (!contained)
+    if size.positive? && !contained
       valid_moves[0]
     else
       direction
@@ -54,7 +52,7 @@ class Player
     @strength + sum_weapons
   end
 
-  def defend (received_attack)
+  def defend(received_attack)
     manage_hit(received_attack)
   end
 
@@ -83,43 +81,35 @@ class Player
     health_string = "HEALTH: #{@health}\n"
     intelligence_string = "INTELLIGENCE: #{@intelligence}\n"
     consecutive_hits_string = "CONSECUTIVE HITS: #{@consecutive_hits}\n"
-    weapons_string = ""
-    shields_string = ""
+    weapons_string = ''
+    shields_string = ''
 
     @weapons.each { |w| weapons_string.concat(w.to_s.join("\n")) }
     @shields.each { |s| shields_string.concat(s.to_s.join("\n")) }
 
-    header_string + location_string + strength_string + health_string + intelligence_string + consecutive_hits_string
-    + weapons_string + shields_string
+    header_string + location_string + strength_string + health_string + intelligence_string + consecutive_hits_string + weapons_string + shields_string
   end
 
   private
-  def receive_weapon (w)
+
+  def receive_weapon(weapon)
     @weapons.each do |wi|
       discard = wi.discard
-      if discard
-        @weapons.delete(wi)
-      end
+      @weapons.delete(wi) if discard
     end
-    
+
     size = @weapons.size
-    if size < MAX_WEAPONS
-      @weapons.push(w)
-    end
+    @weapons.push(weapon) if size < MAX_WEAPONS
   end
 
-  def receive_shield (s)
+  def receive_shield(shield)
     @shields.each do |si|
       discard = si.discard
-      if discard
-        @shields.delete(si)
-      end
+      @shields.delete(si) if discard
     end
 
     size = @shields.size
-    if size < MAX_SHIELDS
-      @shields.push(s)
-    end
+    @shields.push(shield) if size < MAX_SHIELDS
   end
 
   def new_weapon
@@ -150,7 +140,7 @@ class Player
     @intelligence + sum_shields
   end
 
-  def manage_hit (received_attack)
+  def manage_hit(received_attack)
     defense = defensive_energy
     lose = false
 

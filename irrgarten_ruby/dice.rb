@@ -13,12 +13,13 @@ class Dice
   GENERATOR = Random.new
 
   def self.random_pos(max)
-    GENERATOR.rand(max.to_i+1)
+    GENERATOR.rand(max.to_i + 1)
   end
 
   def self.who_starts(players)
-    GENERATOR.rand(players.to_i+1)
+    GENERATOR.rand(players.to_i + 1)
   end
+
   def self.random_intelligence
     GENERATOR.rand(MAX_INTELLIGENCE)
   end
@@ -28,19 +29,19 @@ class Dice
   end
 
   def self.resurrect_player
-    RESURRECT_PROB >= GENERATOR.rand
+    GENERATOR.rand <= RESURRECT_PROB
   end
 
   def self.weapons_reward
-    GENERATOR.rand(WEAPONS_REWARD+1)
+    GENERATOR.rand(WEAPONS_REWARD + 1)
   end
 
   def self.shields_reward
-    GENERATOR.rand(SHIELDS_REWARD+1)
+    GENERATOR.rand(SHIELDS_REWARD + 1)
   end
 
   def self.health_reward
-    GENERATOR.rand(HEALTH_REWARD+1)
+    GENERATOR.rand(HEALTH_REWARD + 1)
   end
 
   def self.weapon_power
@@ -52,7 +53,7 @@ class Dice
   end
 
   def self.uses_left
-    GENERATOR.rand(MAX_USES+1)
+    GENERATOR.rand(MAX_USES + 1)
   end
 
   def self.intensity(competence)
@@ -60,6 +61,6 @@ class Dice
   end
 
   def self.discard_element(uses_left)
-    !(GENERATOR.rand(MAX_USES) < uses_left)
+    GENERATOR.rand(MAX_USES) >= uses_left
   end
 end

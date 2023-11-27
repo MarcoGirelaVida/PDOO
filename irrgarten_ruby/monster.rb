@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'dice'
 class Monster
   INITIAL_HEALTH = 5
 

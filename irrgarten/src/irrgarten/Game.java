@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class Game {
     private static final int MAX_ROUNDS = 10;
     private int currentPlayerIndex;
+    private int nRows = 20;
+    private int nCols = 20;
     private String log;
     private Labyrinth labyrinth;
     private Player currentPlayer;
@@ -30,7 +32,7 @@ public class Game {
         
         this.currentPlayerIndex = Dice.whoStarts(nplayers);
         this.currentPlayer = players.get(this.currentPlayerIndex);
-        labyrinth = new Labyrinth(20, 20, Dice.randomPos(20), Dice.randomPos(20));
+        labyrinth = new Labyrinth(this.nRows, this.nCols, Dice.randomPos(this.nRows), Dice.randomPos(this.nCols));
         
         labyrinth.spreadPlayers(players);
         
@@ -44,6 +46,7 @@ public class Game {
     }
     
     public boolean nextStep(Directions preferredDirection){
+        this.log = "";
         boolean dead = this.currentPlayer.dead();
         if (!dead) {
             Directions direction = this.actualDirection(preferredDirection);
@@ -83,7 +86,11 @@ public class Game {
     }
     
     private void configureLabyrinth(){
-        // No se hacer esta clase, además de que no debería estar en la clase Labyrinth?
+        for (int i = 0; i < this.nRows; i++) {
+            for (int j = 0; j < this.nCols; j++) {
+                
+            }
+        }
     }
     
     private void nextPlayer(){

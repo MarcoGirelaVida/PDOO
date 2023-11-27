@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GameState
-  def initialize(labyrinthv = "", players = "", monsters = "", current_player = 0, winner = false, log = "")
+  def initialize(labyrinthv = '', players = '', monsters = '', current_player = 0, winner = false, log = '')
     @labyrinthv = labyrinthv
     @players = players
     @monsters = monsters
@@ -10,12 +10,7 @@ class GameState
     @log = log
   end
 
-  attr_reader :labyrinthv
-  attr_reader :players
-  attr_reader :monsters
-  attr_reader :current_player
-  attr_reader :winner
-  attr_reader :log
+  attr_reader :labyrinthv, :players, :monsters, :current_player, :winner, :log
 
   def get_log
     output

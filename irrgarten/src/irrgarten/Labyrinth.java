@@ -58,10 +58,12 @@ public class Labyrinth {
         }
     }
     
+    // Devuelve true si hay un jugador en la casilla de salida
     public boolean haveAWinner(){
         return players[exitRow][exitCol] != null;
     }
     
+    // Muestra una representación en cadena de caracteres del estado del laberinto
     public String toString(){
         
         String completeMatrixString = "";
@@ -77,6 +79,10 @@ public class Labyrinth {
         return completeMatrixString;
     }
     
+    // 1. Si la posición suministrada está dentro del tablero y
+    // está vacía, anota en el laberinto la presencia de un monstruo
+    // 2. guarda la referencia del monstruo en el atributo contenedor 
+    // 3. e indica al monstruo cual es su posición actual (setPos)
     public void addMonster(int row, int col, Monster monster){
         if(this.posOK(row, col) && this.emptyPos(row, col)){
             labyrinth[row][col] = MONSTER_CHAR;
@@ -85,6 +91,7 @@ public class Labyrinth {
         }
     }
     
+    // Actualiza la posición de un jugador
     public Monster putPlayer(Directions direction, Player player){
         int oldRow = player.getRow();
         int oldCol = player.getCol();
@@ -94,10 +101,13 @@ public class Labyrinth {
         return putPlayer2D(oldRow, oldCol, newPos[0], newPos[1], player);
     }
     
+    // Añade bloques en la orientación deseada
     public void addBlock(Orientation orientation, int startRow, int startCol, int length){
+        // Suponemos que la orientación es horizontal por default
         int incRow = 0;
         int incCol = 1;
-   
+        
+        // Si no lo es la cambiamos
         if (orientation == Orientation.VERTICAL){
             incRow = 1;
             incCol = 0;
@@ -106,6 +116,9 @@ public class Labyrinth {
         int row = startRow;
         int col = startCol;
         
+        
+        // Generamos tantos bloques como se hayan solicitado en la dirección deseada
+        // Siempre que la posición sea válida
         while (this.posOK(row, col) && (this.emptyPos(row, col) && (length > 0))){
             labyrinth[row][col] = BLOCK_CHAR;
             length--;
@@ -114,6 +127,8 @@ public class Labyrinth {
         }
     }
     
+    // Devuelve una array con todas los posibles movimientos que se pueden dar 
+    // dada una posición
     public ArrayList<Directions> validMoves(int row, int col){
         ArrayList<Directions> output = new ArrayList<>();
         
@@ -133,31 +148,44 @@ public class Labyrinth {
         return output;
     }
     
+    // Devuelve true si la posición proporcionada está dentro del laberinto
     private boolean posOK(int row, int col){
         return (row < nRows) && ( col < nCols);
     }
     
+    // Devuelve true si la posición suministrada está vacía.
     private boolean emptyPos(int row, int col){
         return labyrinth[row][col] == EMPTY_CHAR;
     }
     
+    // Devuelve true si la posición suministrada alberga exclusivamente un monstruo.
     private boolean monsterPos(int row, int col){
         return labyrinth[row][col] == MONSTER_CHAR;
     }
     
+    // Devuelve true si la posición suministrada es la de salida.
     private boolean exitPos(int row, int col){
         return labyrinth[row][col] == EXIT_CHAR;
     }
     
+    // Devuelve true si la posición suministrada contiene un combate
     private boolean combatPos(int row, int col){
         return labyrinth[row][col] == COMBAT_CHAR;
     }
     
+    // True si:
+    // 1. Esta dentro del laberinto
+    // 2. Es o una casilla vacía, o un monstruo o la salida (= es cualquier cosa
+    // menos un bloque o combate)
     private boolean canStepOn(int row, int col){
-        //No pongo && posOK porque ninguna de esas opciones dará true en una posición invalida)
+        //posOk realmente es redundante, pero lo pongo por si acaso
         return (this.monsterPos(row, col) || this.emptyPos(row, col) || this.exitPos(row, col)) && this.posOK(row,col);
     }
     
+    // 1. Este método solo realiza su función si esta dentro del laberínto
+    // 2. Si la posición antigua era de combate ahora será solo montruo
+    // 3. En cualquier otro caso pasa a ser casilla vacía
+    // PRE: Este método se llama solo cuando un jugador abandona una casilla
     private void updateOldPos(int row, int col){
         if(this.posOK(row, col)){
             if(this.combatPos(row, col)){
@@ -169,6 +197,9 @@ public class Labyrinth {
         }
     }
     
+    // Este método calcula cuál sería la dirección a la que se llegaría si se
+    // avanzase desde la posición en la orientación deseada
+    // Nota: No se harán comprobaciones aquí, eso se hace en otros lados
     private int[] dir2Pos(int row, int col, Directions direction){
         int[] nextPosition = new int[2];
         
@@ -194,14 +225,14 @@ public class Labyrinth {
         return nextPosition;
     }
     
-
+    // Devuelve una posición aleatoria vacía y válida del laberinto
     private int[] randomEmptyPos(){
         int[] randomPos = new int[2];
 
         do {
             randomPos[0] = Dice.randomPos(nRows-1);
             randomPos[1] = Dice.randomPos(nCols-1);
-        } while (!this.posOK(randomPos[0], randomPos[1]));
+        } while (!this.posOK(randomPos[0], randomPos[1]) || !this.emptyPos(randomPos[0], randomPos[1]) );
 
         return randomPos;
     }
