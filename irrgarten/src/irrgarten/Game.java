@@ -42,8 +42,7 @@ public class Game {
         this.labyrinth.spreadPlayers(players);
         
         log = "GAME STARTS\n";
-        GameState gameState = this.getGameState();
-        log += gameState.getLog();
+        this.getGameState();
     }
     
     public boolean finished(){
