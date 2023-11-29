@@ -56,11 +56,11 @@ public class Monster {
     
     
     public String toString(){
-        String header = "MONSTER " + this.name + "\n";
+        String header = this.name + "\n";
         String location = "POSTION: [ "+ this.row + ", " + this.col + " ]\n";
         String strengthString = "STRENGTH: " + this.strength + "\n";
         String healthString = "HEALTH: " + this.health + "\n";
-        String intelligenceString = "INTELLIGENCE: " + this.intelligence + "\n";
+        String intelligenceString = "INTELLIGENCE: " + this.intelligence + "\n\n";
         
         return header + location + strengthString + healthString + intelligenceString;
     }

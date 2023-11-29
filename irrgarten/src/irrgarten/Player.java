@@ -10,6 +10,7 @@ package irrgarten;
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Player {
     private static final int MAX_WEAPONS = 2;
@@ -36,7 +37,7 @@ public class Player {
         this.intelligence = intelligence;
         this.strength = strength;
         this.consecutiveHits = 0;
-        this.name = "Player #" + number;
+        this.name = "PLAYER #" + number;
         this.health = INITIAL_HEALTH;
         this.row = -1;
         this.col = -1;
@@ -110,7 +111,7 @@ public class Player {
     }
     
     public String toString(){
-        String header = "PLAYER \"" + this.name + "\"\n";
+        String header = this.name + "\n";
         String location = "POSTION: [ "+ this.row + ", " + this.col + " ]\n";
         String strengthString = "STRENGTH: " + this.strength + "\n";
         String healthString = "HEALTH: " + this.health + "\n";
@@ -132,16 +133,19 @@ public class Player {
         
 
         return header + location + strengthString + healthString + intelligenceString
-                + consecutivehitsString + weaponsString + shieldsString;
+                + consecutivehitsString + weaponsString + shieldsString + "\n";
     }
     
     private void receiveWeapon(Weapon w){
-        for (Weapon wi : this.weapons){
+        Iterator<Weapon> iterator = this.weapons.iterator();
+        while (iterator.hasNext()) {
+            Weapon wi = iterator.next();
             boolean discard = wi.discard();
             if (discard) {
-                this.weapons.remove(wi);
+                iterator.remove();
             }
         }
+
         
         int size = this.weapons.size();
         if (size < MAX_WEAPONS) {
@@ -150,10 +154,12 @@ public class Player {
     }
     
     private void receiveShield(Shield s){
-        for (Shield si : this.shields){
+        Iterator<Shield> iterator = this.shields.iterator();
+        while (iterator.hasNext()) {
+            Shield si = iterator.next();
             boolean discard = si.discard();
-            if (discard){
-                this.shields.add(si);
+            if (discard) {
+                iterator.remove();
             }
         }
         

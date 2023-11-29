@@ -24,7 +24,8 @@ public class Game {
         monsters = new ArrayList<>();
         
         for(int i=0; i < nplayers; i++){
-            Player p = new Player((char)i, Dice.randomIntelligence(), Dice.randomStrength());
+            char player_number = Character.forDigit(i, 10);
+            Player p = new Player(player_number, Dice.randomIntelligence(), Dice.randomStrength());
             players.add(p);
         }
         
@@ -37,9 +38,8 @@ public class Game {
         final int EXITCOL = Dice.randomPos(NCOLS);
         labyrinth = new Labyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
         
-        this.labyrinth.spreadPlayers(players);
         configureLabyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
-        
+        this.labyrinth.spreadPlayers(players);
         
         log = "GAME STARTS\n";
         GameState gameState = this.getGameState();
@@ -95,36 +95,31 @@ public class Game {
     private void configureLabyrinth(int NROWS, int NCOLS, int EXITROW, int EXITCOL) {
                     
         int row, col;
-        for (int i = 0; i < NROWS-2; i++) {
+        final float percentage_monster_summon = 0.1f;
+        final float percentage_block_summon = 0.3f;
+        
+        for (int i = 0; i <  NROWS*NCOLS*percentage_block_summon; i++) {
+            
+            do {
+                row = Dice.randomPos(NROWS-1);
+                col = Dice.randomPos(NROWS-1);
+            } while (row == EXITCOL && col == EXITCOL);
+
+            labyrinth.addBlock(Orientation.VERTICAL, row, col, 1);
+        }
+        
+        for (int i = 0; i < NROWS*NCOLS*percentage_monster_summon; i++) {
 
             do {
                 row = Dice.randomPos(NROWS-1);
                 col = Dice.randomPos(NROWS-1);
             } while (row == EXITROW && col == EXITCOL);
 
-            Monster monster = new Monster("Monster " + i, Dice.randomIntelligence(),Dice.randomStrength());
+            Monster monster = new Monster("MONSTER " + i, Dice.randomIntelligence(),Dice.randomStrength());
             
             
-            if(labyrinth.addMonster(row, col, monster)){
+            if(labyrinth.addMonster(row, col, monster))
                 monsters.add(monster);
-            }
-
-        }
-
-
-       for (int i = 0; i <  NROWS-2; i++) {
-            
-
-            do {
-                row = Dice.randomPos(NROWS-1);
-                col = Dice.randomPos(NROWS-1);
-            } while (row == EXITCOL && col == EXITCOL);
-
-            if (i == 0) {
-                labyrinth.addBlock(Orientation.HORIZONTAL, row, col, NROWS-2);
-            } else {
-                labyrinth.addBlock(Orientation.VERTICAL, row, col, NROWS-2);
-            }
         }
     }
     

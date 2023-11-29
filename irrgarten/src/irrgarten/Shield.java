@@ -22,7 +22,7 @@ public class Shield {
     }
     
     public Shield(){
-        this(0.0f, 0);
+        this(Dice.shieldPower(), Dice.usesLeft());
     }
     
     public float protect(){   

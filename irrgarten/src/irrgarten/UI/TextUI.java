@@ -50,7 +50,8 @@ public class TextUI {
         return direction;
     }
     
-    public void showGame(GameState gameState) {   
+    public void showGame(GameState gameState) {
+        System.out.println(gameState.getLog());
     }
     
 }

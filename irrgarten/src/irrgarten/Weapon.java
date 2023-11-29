@@ -20,7 +20,7 @@ public class Weapon {
     
     // Constructor without parameters, it set the attributes to 0
     public Weapon(){
-        this(0.0f,0);
+        this(Dice.weaponPower(),Dice.usesLeft());
     }
     
     public float attack(){   

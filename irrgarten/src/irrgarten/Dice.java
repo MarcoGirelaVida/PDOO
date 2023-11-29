@@ -20,8 +20,9 @@ public class Dice {
     private static final int MAX_SHIELD = 2;
     private static final Random generator = new Random();
     
+    // Rango entre 0 y max excluyendo max
     public static int randomPos(int max){
-        return generator.nextInt(max+1);
+        return generator.nextInt(max);
     }
     
     public static int whoStarts(int nplayers){

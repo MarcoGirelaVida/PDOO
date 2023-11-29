@@ -188,7 +188,7 @@ public class Labyrinth {
     // menos un bloque o combate)
     private boolean canStepOn(int row, int col){
         //posOk realmente es redundante, pero lo pongo por si acaso
-        return (this.monsterPos(row, col) || this.emptyPos(row, col) || this.exitPos(row, col)) && this.posOK(row,col);
+        return this.posOK(row,col) && (this.monsterPos(row, col) || this.emptyPos(row, col) || this.exitPos(row, col));
     }
     
     // 1. Este método solo realiza su función si esta dentro del laberínto
@@ -265,7 +265,7 @@ public class Labyrinth {
                 output = monsters[row][col];
             }
             else{
-                labyrinth[row][col] = (char) player.getNumber();
+                labyrinth[row][col] = player.getNumber();
             }
             
             players[row][col] = player;
