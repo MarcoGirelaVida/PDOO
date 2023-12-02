@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative 'dice'
+require_relative '../irrgarten_ruby/dice'
 require_relative 'weapon'
 require_relative 'shield'
 require_relative 'game_character'
