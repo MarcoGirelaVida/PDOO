@@ -29,8 +29,13 @@ module Irrgarten
     def spread_players(players)
       players.each do |p|
         pos = random_empty_pos
+        # puts "Spreading player: #{p}"
         put_player_2d(-1, -1, pos[ROW], pos[COL], p)
       end
+    end
+
+    def spread_player_debug(players)
+      put_player_2d(-1,-1, 0, 0, players[0])
     end
 
     def have_a_winner
@@ -164,7 +169,7 @@ module Irrgarten
       loop do
         random_pos[ROW] = Dice.random_pos(@n_rows)
         random_pos[COL] = Dice.random_pos(@n_cols)
-        break if pos_ok(random_pos[ROW], random_pos[COL])
+        break if empty_pos(random_pos[ROW], random_pos[COL])
       end
 
       random_pos
@@ -173,6 +178,7 @@ module Irrgarten
     def put_player_2d(old_row, old_col, row, col, player)
       output = nil
 
+      puts "Se puede pisar en la casilla #{row}, #{col}?: #{can_step_on(row, col)}"
       if can_step_on(row, col)
 
         if pos_ok(old_row, old_col)

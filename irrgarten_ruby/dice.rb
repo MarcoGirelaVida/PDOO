@@ -24,43 +24,43 @@ module Irrgarten
     end
 
     def self.random_intelligence
-      GENERATOR.rand(MAX_INTELLIGENCE)
+      GENERATOR.rand(0.0...MAX_INTELLIGENCE)
     end
 
     def self.random_strength
-      GENERATOR.rand(MAX_STRENGTH)
+      GENERATOR.rand(0.0...MAX_STRENGTH)
     end
 
     def self.resurrect_player
-      GENERATOR.rand <= RESURRECT_PROB
+      GENERATOR.rand < RESURRECT_PROB
     end
 
     def self.weapons_reward
-      GENERATOR.rand(WEAPONS_REWARD + 1)
+      GENERATOR.rand(0..WEAPONS_REWARD)
     end
 
     def self.shields_reward
-      GENERATOR.rand(SHIELDS_REWARD + 1)
+      GENERATOR.rand(0..SHIELDS_REWARD)
     end
 
     def self.health_reward
-      GENERATOR.rand(HEALTH_REWARD + 1)
+      GENERATOR.rand(0..HEALTH_REWARD)
     end
 
     def self.weapon_power
-      GENERATOR.rand(MAX_ATTACK.to_f)
+      GENERATOR.rand(0.0..MAX_ATTACK.to_f)
     end
 
     def self.shield_power
-      GENERATOR.rand(MAX_SHIELD.to_f)
+      GENERATOR.rand(0.0..MAX_SHIELD.to_f)
     end
 
     def self.uses_left
-      GENERATOR.rand(MAX_USES + 1)
+      GENERATOR.rand(0..MAX_USES)
     end
 
     def self.intensity(competence)
-      GENERATOR.rand(competence.to_f)
+      GENERATOR.rand(0.0..competence.to_f)
     end
 
     def self.discard_element(uses_left)

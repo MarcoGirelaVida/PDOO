@@ -21,10 +21,6 @@ public class Shield {
         this.uses = uses;
     }
     
-    public Shield(){
-        this(Dice.shieldPower(), Dice.usesLeft());
-    }
-    
     public float protect(){   
 
         float effectiveProtection = 0;

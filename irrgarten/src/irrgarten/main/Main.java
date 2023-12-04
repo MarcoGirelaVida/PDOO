@@ -14,7 +14,7 @@ public class Main {
 
         TextUI vista = new TextUI();
 
-        Game game = new Game(1);
+        Game game = new Game(1, 1);
         Controller controller = new Controller(game, vista);
         controller.play();
 

@@ -12,7 +12,7 @@ class TestP1
   def self.test_weapon
     puts "TESTING WEAPON"
 
-    void_weapon = Weapon.new(0,0)
+    void_weapon = Weapon.new(0,0,0)
     filled_weapon = Weapon.new(Dice.weapon_power, Dice.uses_left)
 
     puts "Weapons state after being created: "

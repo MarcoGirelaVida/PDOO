@@ -152,7 +152,7 @@ module Irrgarten
         reset_hits
       end
 
-      if (@consecutive_hits == HITS2LOSE) || dead
+      if ((@consecutive_hits == HITS2LOSE) || dead)
         reset_hits
         lose = true
       end

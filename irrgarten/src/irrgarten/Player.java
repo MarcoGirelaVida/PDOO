@@ -96,12 +96,12 @@ public class Player {
         int sReward = Dice.shieldsReward();
         
         for(int i = 0; i < wReward; i++){
-            Weapon wnew = new Weapon();
+            Weapon wnew = this.newWeapon();
             receiveWeapon(wnew);
         }
         
         for (int i = 0; i < sReward; i++){
-            Shield snew = new Shield();
+            Shield snew = this.newShield();
             receiveShield(snew);
         }
         
@@ -120,20 +120,21 @@ public class Player {
         String weaponsString = "";
         String shieldsString = "";
         
-        System.err.println("Tamaño de wapons: " + weapons.size());
         for (Weapon w : weapons){
             weaponsString += w.toString();
-            weaponsString += "\n";
+            weaponsString += ",  ";
         }
+        weaponsString += "\n";
 
         for (Shield s : shields){
             shieldsString += s.toString();
-            shieldsString += "\n";
+            shieldsString += ",  ";
         }
+        shieldsString += "\n\n";
         
 
         return header + location + strengthString + healthString + intelligenceString
-                + consecutivehitsString + weaponsString + shieldsString + "\n";
+                + consecutivehitsString + weaponsString + shieldsString;
     }
     
     private void receiveWeapon(Weapon w){

@@ -16,23 +16,48 @@ module Irrgarten
     N_COLS = 20
     EXIT_ROW = Dice.random_pos(N_ROWS)
     EXIT_COL = Dice.random_pos(N_COLS)
-    def initialize(n_players = 1, player_intelligence = Dice.random_intelligence, player_strength = Dice.random_strength,
-                   monster_intelligence = Dice.random_intelligence, monster_strength = Dice.random_strength)
+
+    N_ROWS_DEBUG = 5
+    N_COLS_DEBUG = 5
+    EXIT_ROW_DEBUG = 2
+    EXIT_COL_DEBUG = 2
+    def initialize(n_players = 1, debug_mode = 0)
       @players = []
       @monsters = []
 
-      n_players.times do |i|
-        p = Player.new(i, player_intelligence, player_strength)
+      if debug_mode.zero?
+        player_intelligence = Dice.random_intelligence
+        player_strength = Dice.random_strength
+
+        n_players.times do |i|
+          p = Player.new(i, player_intelligence, player_strength)
+          @players.push(p)
+        end
+
+        @current_player_index = Dice.who_starts(n_players)
+        @current_player = @players.at(@current_player_index)
+
+        @labyrinth = Labyrinth.new(N_ROWS, N_COLS, EXIT_ROW, EXIT_COL)
+
+        configure_labyrinth
+        @labyrinth.spread_players(@players)
+
+      else
+        player_intelligence = 5.0
+        player_strength = 5.0
+
+        p = Player.new(0, player_intelligence, player_strength)
         @players.push(p)
+
+        @current_player_index = 0
+        @current_player = p
+
+        @labyrinth = Labyrinth.new(N_ROWS_DEBUG, N_COLS_DEBUG, EXIT_ROW_DEBUG, EXIT_COL_DEBUG)
+
+        configure_labyrinth_debug
+        @labyrinth.spread_player_debug(@players)
       end
 
-      @current_player_index = Dice.who_starts(n_players)
-      @current_player = @players.at(@current_player_index)
-
-      @labyrinth = Labyrinth.new(N_ROWS, N_COLS, EXIT_ROW, EXIT_COL)
-
-      configure_labyrinth(monster_intelligence, monster_strength)
-      @labyrinth.spread_players(@players)
       @log = "GAME STARTS\n"
       game_state
     end
@@ -65,6 +90,10 @@ module Irrgarten
 
       next_player unless end_game
 
+      if end_game
+        log_player_won
+      end
+
       end_game
     end
 
@@ -79,11 +108,16 @@ module Irrgarten
         monster_string += monster.to_s
       end
 
-      GameState.new(@labyrinth.to_s, players_string, monster_string, @current_player.to_s, finished, @log)
+      GameState.new(@labyrinth.to_s, players_string, monster_string, @current_player_index.to_s, finished, @log)
     end
 
-    def configure_labyrinth(monster_intelligence, monster_strength)
+    private
+
+    def configure_labyrinth
+      monster_intelligence = Dice.random_intelligence
+      monster_strength = Dice.random_strength
       monster_counter = 0
+
       N_ROWS.times do |row|
         N_COLS.times do |col|
           next unless (row != EXIT_ROW) && (col != EXIT_COL)
@@ -99,6 +133,26 @@ module Irrgarten
             monster_counter += 1
           end
         end
+      end
+    end
+
+    def configure_labyrinth_debug
+      number_of_monsters = 3
+      monsters_intelligences = [0.0, 10.0, 100.0]
+      monsters_strengths = monsters_intelligences
+      monsters_positions = [[0, 2], [0, 3], [0, 4]]
+
+      number_of_monsters.times do |i|
+        new_monster = Monster.new("Monster #{i}", monsters_intelligences[i], monsters_strengths[i])
+        @labyrinth.add_monster(monsters_positions[i][0], monsters_positions[i][1], new_monster)
+        @monsters.push(new_monster)
+      end
+
+      number_of_blocks = 3
+      blocks_positions = [[3, 0], [4, 3], [3, 4]]
+
+      number_of_blocks.times do |i|
+        @labyrinth.add_block(Orientation::HORIZONTAL, blocks_positions[i][0], blocks_positions[i][1], 2)
       end
     end
 
@@ -121,19 +175,24 @@ module Irrgarten
 
       player_attack = @current_player.attack
       lose = monster.defend(player_attack)
+      # puts "Player attack: #{player_attack}"
+      # puts "Have the monster died it?: #{lose}"
 
       while !lose && (rounds < MAX_ROUNDS)
         rounds += 1
-        winner = GameCharacter::MONSTER
 
         monster_attack = monster.attack
         lose = @current_player.defend(monster_attack)
+        # puts "Monster attack: #{monster_attack}"
+        # puts "Have the player died it?: #{lose}"
 
         next if lose
 
         player_attack = @current_player.attack
         winner = GameCharacter::PLAYER
         lose = monster.defend(player_attack)
+        # puts "Player attack: #{player_attack}"
+        # puts "Have the monster died it?: #{lose}"
       end
 
       log_rounds(rounds, MAX_ROUNDS)

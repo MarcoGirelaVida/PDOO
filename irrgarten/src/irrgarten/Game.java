@@ -19,28 +19,48 @@ public class Game {
     private ArrayList<Player> players;
     private ArrayList<Monster> monsters;
     
-    public Game(int nplayers){
+    public Game(int nplayers, int debugMode){
         players = new ArrayList<>(nplayers);
         monsters = new ArrayList<>();
         
-        for(int i=0; i < nplayers; i++){
-            char player_number = Character.forDigit(i, 10);
-            Player p = new Player(player_number, Dice.randomIntelligence(), Dice.randomStrength());
-            players.add(p);
+        if (debugMode == 0) {
+            for(int i=0; i < nplayers; i++){
+                char player_number = Character.forDigit(i, 10);
+                Player p = new Player(player_number, Dice.randomIntelligence(), Dice.randomStrength());
+                players.add(p);
+            }
+
+            this.currentPlayerIndex = Dice.whoStarts(nplayers);
+            this.currentPlayer = players.get(this.currentPlayerIndex);
+
+            final int NROWS = 20;
+            final int NCOLS = 20;
+            final int EXITROW = Dice.randomPos(NROWS);
+            final int EXITCOL = Dice.randomPos(NCOLS);
+            labyrinth = new Labyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
+
+            configureLabyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
+            this.labyrinth.spreadPlayers(players);
         }
-        
-        this.currentPlayerIndex = Dice.whoStarts(nplayers);
-        this.currentPlayer = players.get(this.currentPlayerIndex);
-        
-        final int NROWS = 20;
-        final int NCOLS = 20;
-        final int EXITROW = Dice.randomPos(NROWS);
-        final int EXITCOL = Dice.randomPos(NCOLS);
-        labyrinth = new Labyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
-        
-        configureLabyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
-        this.labyrinth.spreadPlayers(players);
-        
+        else {
+
+            Player p = new Player('0', 5, 5);
+            players.add(p);
+
+            this.currentPlayerIndex = 0;
+            this.currentPlayer = players.get(this.currentPlayerIndex);
+
+            final int NROWS = 5;
+            final int NCOLS = 5;
+            final int EXITROW = 2;
+            final int EXITCOL = 2;
+            labyrinth = new Labyrinth(NROWS, NCOLS, EXITROW, EXITCOL);
+
+            configureLabyrinthDebug(NROWS, NCOLS, EXITROW, EXITCOL);
+            this.labyrinth.spreadPlayersDebug(players);
+
+        }
+
         log = "GAME STARTS\n";
         this.getGameState();
     }
@@ -77,6 +97,9 @@ public class Game {
         if (!endGame) {
             this.nextPlayer();
         }
+        else{
+            this.logPlayerWon();
+        }
         
         return endGame;
     }
@@ -86,7 +109,7 @@ public class Game {
         String strPlayers = players.toString();
         String strMonsters = monsters.toString();
         String strLabyrinth = labyrinth.toString();
-        GameState gameState = new GameState(strPlayers, strMonsters, strLabyrinth,
+        GameState gameState = new GameState(strLabyrinth, strPlayers, strMonsters,
                     this.currentPlayer.getNumber(), this.finished(), this.log);
         return gameState;
     }
@@ -119,6 +142,26 @@ public class Game {
             
             if(labyrinth.addMonster(row, col, monster))
                 monsters.add(monster);
+        }
+    }
+    
+    private void configureLabyrinthDebug(int NROWS, int NCOLS, int EXITROW, int EXITCOL) {
+        int number_of_monsters = 3;
+        int[][] monsters_positions = {{0, 2}, {0, 3}, {0, 4}};
+        float[] monsters_intelligences = {0.0f, 10.0f, 100.0f};
+        float[] monsters_strenghts = monsters_intelligences;
+        
+        for (int i = 0; i < number_of_monsters; i++) {
+            Monster monster = new Monster("MONSTER " + i, monsters_intelligences[i], monsters_strenghts[i]);
+            labyrinth.addMonster(monsters_positions[i][0], monsters_positions[i][1], monster);
+            monsters.add(monster);
+        }
+        
+        int number_of_blocks = 3;
+        int[][] blocks_positions = {{3, 0}, {3, 4}, {4, 3}};
+        
+        for (int i = 0; i < number_of_blocks; i++) {
+            labyrinth.addBlock(Orientation.HORIZONTAL, blocks_positions[i][0], blocks_positions[i][1], 2);
         }
     }
     

@@ -51,13 +51,13 @@ public class TextUI {
     }
     
     public void showGame(GameState gameState) {
-        System.out.println("\n\t\t CURRENT GAMESTATE \n\n");
-        System.out.println("\t\tPLAYERS\n" + gameState.getPlayers() + "\n\n");
-        System.out.println("CURRENT PLAYER: " + gameState.getCurrentPlayer() + "\n\n");
-        System.out.println( "IS THERE A WINNER?: " + gameState.isWinner() + "\n\n");
-        System.out.println("\t\tMONSTERS\n" + gameState.getMonsters() + "\n\n");
-        System.out.println("\t\tLABYRINTHV\n" + gameState.getLabyrinthv() + "\n\n");
-        System.out.println("\t\tLOG\n" + gameState.getLog() + "\n\n");
+        System.out.println("\t\t CURRENT GAMESTATE \n");
+        System.out.println("\t\tMONSTERS\n" + gameState.getMonsters() + "\n");
+        System.out.println("\t\tLABYRINTHV\n" + gameState.getLabyrinthv() + "\n");
+        System.out.println("\t\tPLAYERS\n" + gameState.getPlayers());
+        System.out.println("CURRENT PLAYER: " + (char) gameState.getCurrentPlayer());
+        System.out.println("IS THERE A WINNER?: " + gameState.isWinner() + "\n");
+        System.out.println("\t\tLOG\n" + gameState.getLog() + "\n");
     }
     
 }

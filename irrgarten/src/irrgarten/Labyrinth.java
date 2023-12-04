@@ -60,6 +60,10 @@ public class Labyrinth {
         }
     }
     
+    public void spreadPlayersDebug(ArrayList<Player> players){
+        this.putPlayer2D(-1, -1, 0, 0, players.get(0));
+    }
+    
     // Devuelve true si hay un jugador en la casilla de salida
     public boolean haveAWinner(){
         return players[exitRow][exitCol] != null;
@@ -241,7 +245,7 @@ public class Labyrinth {
         do {
             randomPos[ROW] = Dice.randomPos(nRows-1);
             randomPos[COL] = Dice.randomPos(nCols-1);
-        } while (!this.posOK(randomPos[ROW], randomPos[COL]) || !this.emptyPos(randomPos[ROW], randomPos[COL]) );
+        } while (!this.emptyPos(randomPos[ROW], randomPos[COL]));
 
         return randomPos;
     }

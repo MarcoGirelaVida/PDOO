@@ -52,6 +52,8 @@ module Irrgarten
       header_string + location_string + strength_string + health_string + intelligence_string
     end
 
+    private
+
     def got_wounded
       @health -= 1
     end

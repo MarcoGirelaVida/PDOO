@@ -18,11 +18,6 @@ public class Weapon {
         this.uses = uses;
     }
     
-    // Constructor without parameters, it set the attributes to 0
-    public Weapon(){
-        this(Dice.weaponPower(),Dice.usesLeft());
-    }
-    
     public float attack(){   
         
         float effectivePower = 0;

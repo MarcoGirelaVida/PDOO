@@ -51,6 +51,6 @@ public class GameState {
     }
     
     public String getLog(){
-        return (this.log + "\n");
+        return this.log;
     }
 }
